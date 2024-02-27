@@ -5,9 +5,16 @@ import java.util.Map;
 
 public class Inventory {
 
+    private static Inventory newInventory;
     private Map<String, Integer> inventory = new HashMap<String, Integer>();
 
-    public Inventory() {}
+    private Inventory() {}                          //This makes it so
+                                                    //only one Inventory object
+    public static Inventory getInstance() {         //can be created
+        if (newInventory == null)                   //like a real database.
+            newInventory = new Inventory();
+        return newInventory;
+    }
 
     public void addItem(String itemName, Integer quantity) {
         this.inventory.put(itemName, quantity);
