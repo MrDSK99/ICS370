@@ -21,8 +21,7 @@ public class Controller {
         Stage mainWindow = (Stage) tfProductName.getScene().getWindow();
 
         Product item = new Product(null,-1);
-        item.setName(tfProductName.getText().toLowerCase()); //make input case-insensitive
-
+        item.setName(tfProductName.getText().toLowerCase()); //accept user input and make case-insensitive
         item.setQuantity(inventory.returnQuantity(item.getName()));
 
         if (item.getQuantity() == -1)   //if product doesn't exist in inventory, output "(Product) does not exist in inventory."
