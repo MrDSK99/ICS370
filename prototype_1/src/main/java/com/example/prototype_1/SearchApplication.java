@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SearchApplication extends Application{
+public class SearchApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(SearchApplication.class.getResource("search-view.fxml"));
@@ -20,7 +20,7 @@ public class SearchApplication extends Application{
         stage.show();
     }
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
 
         Inventory inventory = Inventory.getInstance();
         

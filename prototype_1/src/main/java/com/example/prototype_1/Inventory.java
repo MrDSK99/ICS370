@@ -11,7 +11,7 @@ public class Inventory {
     private Inventory() {}                          //This makes it so
                                                     //only one Inventory object
     public static Inventory getInstance() {         //can be created
-        if (newInventory == null)                   //like a real database.
+        if (newInventory == null)                   //simulating a database.
             newInventory = new Inventory();
         return newInventory;
     }
