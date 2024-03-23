@@ -1,7 +1,6 @@
 package com.metrosoftwaresolutions.inventory_application;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Inventory {
 
@@ -35,4 +34,17 @@ public class Inventory {
         else
             return this.inventory.get(itemName);
     }
+    public ArrayList<Product> getAllInventory() {
+        ArrayList<Product> allInventory = new ArrayList<Product>();
+        Iterator<String> it = inventory.keySet().iterator();
+        while(it.hasNext())   {
+            Product product = new Product(null, -1);
+            String key = it.next();
+            product.setName(key);
+            product.setQuantity(inventory.get(key));
+            allInventory.add(product);
+        }
+        return allInventory;
+    }
 }
+

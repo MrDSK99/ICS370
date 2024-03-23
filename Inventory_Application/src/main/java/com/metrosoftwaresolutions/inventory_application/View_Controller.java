@@ -1,19 +1,26 @@
 package com.metrosoftwaresolutions.inventory_application;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import javafx.scene.Scene;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 
 public class View_Controller {
 
-    private final String PASSWORD = "password";
 
+    private final String PASSWORD = "password";
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -40,9 +47,40 @@ public class View_Controller {
         stage.setScene(scene);
         stage.show();
     }
+
+    //show all inventory controls here, very messy but works for now
     @FXML
     public void btn_switch_to_show_all_scene(ActionEvent event)  throws IOException {
-
+        BorderPane root = new BorderPane();
+        Button back = new Button("Back");
+        back.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    back_btn(event);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        TableView table_view = new TableView<Product>();
+        TableColumn<Product, String> table_product_column = new TableColumn<>("Name");
+        table_product_column.setCellValueFactory(new PropertyValueFactory<>("name"));
+        TableColumn<Product, Integer> table_quantity_column = new TableColumn<>("Quantity");
+        table_quantity_column.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        table_view.getColumns().add(table_product_column);
+        table_view.getColumns().add(table_quantity_column);
+        table_view.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        Inventory inventory = Inventory.getInstance();
+        for (Product item: inventory.getAllInventory()) {
+            table_view.getItems().add(item);
+        }
+        root.setCenter(table_view);
+        root.setBottom(back);
+        scene = new Scene(root,600, 400);
+        stage.setScene(scene);
+        stage.show();
     }
     @FXML
     public void btn_switch_to_add_item_scene(ActionEvent event) throws IOException {
@@ -87,8 +125,6 @@ public class View_Controller {
             output.setText("There are "+item.getQuantity()+" "+item.getName()+" in stock.");
     }
 
-    //show all inventory controls here
-
     //add item to inventory controls here
     @FXML
     private TextField AddProductName;
@@ -101,19 +137,14 @@ public class View_Controller {
 
     @FXML
     void add_item_button(ActionEvent event) {
+
         String itemName = AddProductName.getText().toLowerCase();
         int quantity = Integer.parseInt(AddQty.getText());
-
         Inventory inventory = Inventory.getInstance();
-        if (inventory.returnQuantity(itemName) == -1){
+        if (inventory.returnQuantity(itemName) == -1)
             inventory.addItem(itemName, quantity);
-            confirmation.setText("Item: " + itemName + ", Quantity: " + quantity + " added to inventory.");
-        } else { // If the item already exists, update its quantity
+        else  // If the item already exists, update its quantity
             inventory.updateQuantity(itemName,quantity);
-            int updatedQuantity = inventory.returnQuantity(itemName);
-            confirmation.setText("Item: " + itemName + " , New Quantity: " + updatedQuantity + " updated in inventory");
-        }
-
+        confirmation.setText(quantity + " " + itemName + " added to inventory.");
     }
 }
-
