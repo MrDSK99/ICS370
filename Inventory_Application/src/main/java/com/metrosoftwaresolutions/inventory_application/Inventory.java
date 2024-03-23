@@ -20,6 +20,15 @@ public class Inventory {
         this.inventory.put(itemName, quantity);
     }
 
+    public void updateQuantity(String itemName, Integer additionalQuantity) {
+        if (this.inventory.containsKey(itemName)) {
+            Integer currentQuantity = this.inventory.get(itemName);
+            this.inventory.put(itemName, currentQuantity + additionalQuantity);
+        } else {
+            this.inventory.put(itemName, additionalQuantity);
+        }
+    }
+
     public Integer returnQuantity(String itemName) {
         if (!this.inventory.containsKey(itemName))
             return -1;

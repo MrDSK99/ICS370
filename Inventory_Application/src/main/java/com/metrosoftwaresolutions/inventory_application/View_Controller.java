@@ -12,6 +12,8 @@ import java.io.IOException;
 
 public class View_Controller {
 
+    private final String PASSWORD = "password";
+
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -39,15 +41,23 @@ public class View_Controller {
         stage.show();
     }
     @FXML
-    public void btn_switch_to_show_all_scene(ActionEvent event) {
+    public void btn_switch_to_show_all_scene(ActionEvent event)  throws IOException {
 
     }
     @FXML
-    public void btn_switch_to_add_item_scene(ActionEvent event) {
+    public void btn_switch_to_add_item_scene(ActionEvent event) throws IOException {
         Stage mainWindow = (Stage) password_field.getScene().getWindow();
-        if (password_field.getText().isEmpty()) {
+        if (password_field.getText().isEmpty() || !password_field.getText().equals(PASSWORD)) {
+            password_field.clear();
             password_field.setPromptText("Please enter password.");
             return;
+        }
+        else {
+            root = FXMLLoader.load(getClass().getResource("Add_Items_View.fxml"));
+            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         }
     }
 
@@ -80,4 +90,30 @@ public class View_Controller {
     //show all inventory controls here
 
     //add item to inventory controls here
+    @FXML
+    private TextField AddProductName;
+
+    @FXML
+    private TextField AddQty;
+
+    @FXML
+    private TextField confirmation;
+
+    @FXML
+    void add_item_button(ActionEvent event) {
+        String itemName = AddProductName.getText().toLowerCase();
+        int quantity = Integer.parseInt(AddQty.getText());
+
+        Inventory inventory = Inventory.getInstance();
+        if (inventory.returnQuantity(itemName) == -1){
+            inventory.addItem(itemName, quantity);
+            confirmation.setText("Item: " + itemName + ", Quantity: " + quantity + " added to inventory.");
+        } else { // If the item already exists, update its quantity
+            inventory.updateQuantity(itemName,quantity);
+            int updatedQuantity = inventory.returnQuantity(itemName);
+            confirmation.setText("Item: " + itemName + " , New Quantity: " + updatedQuantity + " updated in inventory");
+        }
+
+    }
 }
+
