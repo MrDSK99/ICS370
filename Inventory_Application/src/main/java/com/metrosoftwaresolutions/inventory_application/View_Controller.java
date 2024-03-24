@@ -65,7 +65,7 @@ public class View_Controller {
         });
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         TableView table_view = new TableView<Product>();
-        TableColumn<Product, String> table_product_column = new TableColumn<>("Name");
+        TableColumn<Product, String> table_product_column = new TableColumn<>("Product");
         table_product_column.setCellValueFactory(new PropertyValueFactory<>("name"));
         TableColumn<Product, Integer> table_quantity_column = new TableColumn<>("Quantity");
         table_quantity_column.setCellValueFactory(new PropertyValueFactory<>("quantity"));
@@ -137,7 +137,18 @@ public class View_Controller {
 
     @FXML
     void add_item_button(ActionEvent event) {
-
+        if (AddProductName.getText().isEmpty()) {
+            confirmation.setText("Please enter a product name.");
+            return;
+        }
+        else if (AddQty.getText().isEmpty()) {
+            confirmation.setText("Please enter the quantity.");
+            return;
+        }
+        else if (Integer.parseInt(AddQty.getText()) < 0) {
+            confirmation.setText("Invalid quantity.");
+            return;
+        }
         String itemName = AddProductName.getText().toLowerCase();
         int quantity = Integer.parseInt(AddQty.getText());
         Inventory inventory = Inventory.getInstance();
