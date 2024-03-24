@@ -48,9 +48,9 @@ public class View_Controller {
         stage.show();
     }
 
-    //show all inventory controls here, very messy but works for now
     @FXML
     public void btn_switch_to_show_all_scene(ActionEvent event)  throws IOException {
+        //show all inventory controls also here, very messy but works for now
         BorderPane root = new BorderPane();
         Button back = new Button("Back");
         back.setOnAction(new EventHandler<ActionEvent>() {
@@ -82,6 +82,7 @@ public class View_Controller {
         stage.setScene(scene);
         stage.show();
     }
+
     @FXML
     public void btn_switch_to_add_item_scene(ActionEvent event) throws IOException {
         Stage mainWindow = (Stage) password_field.getScene().getWindow();
