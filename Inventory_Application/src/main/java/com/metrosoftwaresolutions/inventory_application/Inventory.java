@@ -28,7 +28,7 @@ public class Inventory {
         }
     }
 
-    public Integer returnQuantity(String itemName) {
+    public Integer getQuantity(String itemName) {
         if (!this.inventory.containsKey(itemName))
             return -1;
         else
@@ -37,7 +37,7 @@ public class Inventory {
     public ArrayList<Product> getAllInventory() {
         ArrayList<Product> allInventory = new ArrayList<Product>();
         Iterator<String> it = inventory.keySet().iterator();
-        while(it.hasNext())   {
+        while (it.hasNext()) {
             Product product = new Product(null, -1);
             String key = it.next();
             product.setName(key);

@@ -118,7 +118,7 @@ public class View_Controller {
         Inventory inventory = Inventory.getInstance();
         Product item = new Product(null,-1);
         item.setName(tfProductName.getText().toLowerCase()); //accept user input and make case-insensitive
-        item.setQuantity(inventory.returnQuantity(item.getName()));
+        item.setQuantity(inventory.getQuantity(item.getName()));
 
         if (item.getQuantity() == -1)   //if product doesn't exist in inventory, output "(Product) does not exist in inventory."
             output.setText(item.getName().substring(0,1).toUpperCase()+item.getName().substring(1)+" does not exist in inventory.");
@@ -153,7 +153,7 @@ public class View_Controller {
         String itemName = AddProductName.getText().toLowerCase();
         int quantity = Integer.parseInt(AddQty.getText());
         Inventory inventory = Inventory.getInstance();
-        if (inventory.returnQuantity(itemName) == -1)
+        if (inventory.getQuantity(itemName) == -1)
             inventory.addItem(itemName, quantity);
         else  // If the item already exists, update its quantity
             inventory.updateQuantity(itemName,quantity);

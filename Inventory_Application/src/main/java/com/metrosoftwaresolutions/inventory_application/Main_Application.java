@@ -34,6 +34,8 @@ public class Main_Application extends Application {
         inventory.addItem("potatoes", 25);
         inventory.addItem("peppers", 3);
 
+        //start threads here
+
         //launch the GUI
         launch();
     }
