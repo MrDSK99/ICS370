@@ -22,6 +22,9 @@ public class Main_Application extends Application {
 
         Inventory inventory = Inventory.getInstance();
 
+        // Load existing inventory data from JSON file
+        inventory.loadInventory();
+
         //mock inventory set here
         inventory.addItem("apples", 22);
         inventory.addItem("bananas", 11);
@@ -38,5 +41,8 @@ public class Main_Application extends Application {
 
         //launch the GUI
         launch();
+
+        // Call saveInventory() method to save the updated inventory data
+        Inventory.getInstance().saveInventory();
     }
 }
