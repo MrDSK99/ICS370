@@ -138,6 +138,9 @@ public class View_Controller {
 
     @FXML
     void add_item_button(ActionEvent event) {
+        boolean quantityIsNumber = true;
+        try { Integer.parseInt(AddQty.getText()); }
+        catch (NumberFormatException e) { quantityIsNumber = false; }
         if (AddProductName.getText().isEmpty()) {
             confirmation.setText("Please enter a product name.");
             return;
@@ -146,7 +149,7 @@ public class View_Controller {
             confirmation.setText("Please enter the quantity.");
             return;
         }
-        else if (Integer.parseInt(AddQty.getText()) < 0) {
+        else if (!quantityIsNumber || Integer.parseInt(AddQty.getText()) < 0 ) {
             confirmation.setText("Invalid quantity.");
             return;
         }
