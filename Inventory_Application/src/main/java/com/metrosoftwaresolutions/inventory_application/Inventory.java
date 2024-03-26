@@ -14,7 +14,7 @@ public class Inventory {
 
     private List<Product> products;   // Instance variable to hold list of products
     private ObjectMapper mapper;
-    private final String JSON_FILE = "//Inventory_Application/inventory.json";  //Path to the json file
+    private final String JSON_FILE = "inventory.json";  //Path to the json file
    
 
    private Inventory() {
@@ -58,10 +58,14 @@ public class Inventory {
 
      // Save inventory to JSON file
     private void saveInventory() {
+        ObjectMapper objectMapper = new ObjectMapper();
         try {
-            mapper.writeValue(new File(JSON_FILE), products);
+             // Serialize inventory data to JSON format
+            String jsonInventory = objectMapper.writeValueAsString(products);
+            Files.write(Paths.get(JSON_FILE),jsonInventory.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
+            System.err.println("Error saving inventory: " + e.getMessage());
         }
     }
 
@@ -69,31 +73,31 @@ public class Inventory {
     public List<Product> getAllInventory() {
         return products;
     }
-    
-    public ArrayList<Product> getAllInventory() {
-        ArrayList<Product> allInventory = new ArrayList<Product>();
-        Iterator<String> it = inventory.keySet().iterator();
-        while (it.hasNext()) {
-            Product product = new Product(null, -1);
-            String key = it.next();
-            product.setName(key);
-            product.setQuantity(inventory.get(key));
-            allInventory.add(product);
+
+      public Integer returnQuantity(String itemName) {
+        for (Product product : products) {
+            if (product.getName().equals(itemName)) {
+                return product.getQuantity();
+            }
         }
-        return allInventory;
+        return -1; // Item not found in inventory
     }
 
+    
      // Load inventory from JSON file
     private void loadInventory() {
         try {
             File file = new File(JSON_FILE);
             if (file.exists()) {
                 CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, Product.class);
-                products = mapper.readValue(file, collectionType);
+                products = mapper.readValue(file, new TypeReference<List<Product>>()  {
+                });
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+   
 }
 
