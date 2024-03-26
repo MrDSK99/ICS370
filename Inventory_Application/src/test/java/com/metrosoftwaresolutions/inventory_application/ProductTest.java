@@ -9,7 +9,7 @@ class ProductTest {
 
     @Test
     void ProductTestSetAndGet() {
-        Product product = new Product(null, null);
+        Product product = new Product();
         product.setName("hamburgers");
         product.setQuantity(40);
         String product_name = product.getName();
