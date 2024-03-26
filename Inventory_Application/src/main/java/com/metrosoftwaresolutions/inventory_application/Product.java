@@ -5,6 +5,11 @@ public class Product {
     private String name;
     private Integer quantity;
 
+    public Product(){
+        this.name = "";
+        this.quantity = 0;
+    }
+
     public Product(String name, Integer quantity) {
         this.name = name;
         this.quantity = quantity;
