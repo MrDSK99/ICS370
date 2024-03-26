@@ -28,6 +28,7 @@ public class View_Controller {
     //back button for all views
     @FXML
     public void back_btn(ActionEvent event) throws IOException {
+        //this code can be put in a method getScene(scene.fxml), used 3 times
         root = FXMLLoader.load(getClass().getResource("Home_Screen.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -85,7 +86,7 @@ public class View_Controller {
 
     @FXML
     public void btn_switch_to_add_item_scene(ActionEvent event) throws IOException {
-        Stage mainWindow = (Stage) password_field.getScene().getWindow();
+        //user needs correct password to access add item screen
         if (password_field.getText().isEmpty() || !password_field.getText().equals(PASSWORD)) {
             password_field.clear();
             password_field.setPromptText("Please enter password.");
@@ -110,7 +111,6 @@ public class View_Controller {
     @FXML
     void btnSearch(ActionEvent event) {
 
-        Stage mainWindow = (Stage) tfProductName.getScene().getWindow();
         if (tfProductName.getText().isEmpty()) {
             output.setText("Please enter a product name.");
             return;
@@ -138,6 +138,7 @@ public class View_Controller {
 
     @FXML
     void add_item_button(ActionEvent event) {
+        //checking for valid input first
         boolean quantityIsNumber = true;
         try { Integer.parseInt(AddQty.getText()); }
         catch (NumberFormatException e) { quantityIsNumber = false; }

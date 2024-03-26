@@ -1,16 +1,19 @@
 package com.metrosoftwaresolutions.inventory_application;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import java.io.IOException;
-import java.util.*;
 
 public class Inventory {
 
-    private static Inventory newInventory;
+    private static Inventory inventory;
 
     private List<Product> products;   // Instance variable to hold list of products
     private ObjectMapper mapper;
@@ -24,9 +27,9 @@ public class Inventory {
     }                        
                                                     
     public static Inventory getInstance() {         
-        if (newInventory == null)                   
-            newInventory = new Inventory();
-        return newInventory;
+        if (inventory == null)
+            inventory = new Inventory();
+        return inventory;
     }
 
     public void addItem(String itemName, Integer quantity) {
@@ -57,7 +60,7 @@ public class Inventory {
     }
 
      // Save inventory to JSON file
-    private void saveInventory() {
+    public void saveInventory() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
              // Serialize inventory data to JSON format
@@ -85,7 +88,7 @@ public class Inventory {
 
     
      // Load inventory from JSON file
-    private void loadInventory() {
+    public void loadInventory() {
         try {
             File file = new File(JSON_FILE);
             if (file.exists()) {
