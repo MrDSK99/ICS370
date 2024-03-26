@@ -6,6 +6,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Main_Application extends Application {
     @Override
@@ -22,27 +24,10 @@ public class Main_Application extends Application {
 
         Inventory inventory = Inventory.getInstance();
 
-        // Load existing inventory data from JSON file
         inventory.loadInventory();
 
-        //mock inventory set here
-        inventory.addItem("apples", 22);
-        inventory.addItem("bananas", 11);
-        inventory.addItem("watermelons", 5);
-        inventory.addItem("oranges", 19);
-        inventory.addItem("mangoes", 9);
-        inventory.addItem("carrots", 33);
-        inventory.addItem("avocados", 14);
-        inventory.addItem("onions", 12);
-        inventory.addItem("potatoes", 25);
-        inventory.addItem("peppers", 3);
-
-        //start threads here
 
         //launch the GUI
         launch();
-
-        // Call saveInventory() method to save the updated inventory data
-        Inventory.getInstance().saveInventory();
-    }
-}
+        inventory.saveInventory();
+    }}

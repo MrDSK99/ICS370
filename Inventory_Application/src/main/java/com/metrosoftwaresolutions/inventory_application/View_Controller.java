@@ -118,7 +118,7 @@ public class View_Controller {
         Inventory inventory = Inventory.getInstance();
         Product item = new Product(null,-1);
         item.setName(tfProductName.getText().toLowerCase()); //accept user input and make case-insensitive
-        item.setQuantity(inventory.getQuantity(item.getName()));
+        item.setQuantity(inventory.returnQuantity(item.getName()));
 
         if (item.getQuantity() == -1)   //if product doesn't exist in inventory, output "(Product) does not exist in inventory."
             output.setText(item.getName().substring(0,1).toUpperCase()+item.getName().substring(1)+" does not exist in inventory.");
@@ -138,9 +138,6 @@ public class View_Controller {
 
     @FXML
     void add_item_button(ActionEvent event) {
-        boolean quantityIsNumber = true;
-        try { Integer.parseInt(AddQty.getText()); }
-        catch (NumberFormatException e) { quantityIsNumber = false; }
         if (AddProductName.getText().isEmpty()) {
             confirmation.setText("Please enter a product name.");
             return;
@@ -149,17 +146,18 @@ public class View_Controller {
             confirmation.setText("Please enter the quantity.");
             return;
         }
-        else if (!quantityIsNumber || Integer.parseInt(AddQty.getText()) < 0 ) {
+        else if (Integer.parseInt(AddQty.getText()) < 0) {
             confirmation.setText("Invalid quantity.");
             return;
         }
         String itemName = AddProductName.getText().toLowerCase();
         int quantity = Integer.parseInt(AddQty.getText());
         Inventory inventory = Inventory.getInstance();
-        if (inventory.getQuantity(itemName) == -1)
+        if (inventory.returnQuantity(itemName) == -1)
             inventory.addItem(itemName, quantity);
         else  // If the item already exists, update its quantity
             inventory.updateQuantity(itemName,quantity);
         confirmation.setText(quantity + " " + itemName + " added to inventory.");
     }
+
 }
