@@ -14,16 +14,14 @@ import java.io.IOException;
 public class Inventory {
 
     private static Inventory inventory;
-
     private List<Product> products;   // Instance variable to hold list of products
     private ObjectMapper mapper;
     private final String JSON_FILE = "inventory.json";  //Path to the json file
-   
 
    private Inventory() {
         products = new ArrayList<>();
         mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-       loadInventory();
+        loadInventory();
     }                        
                                                     
     public static Inventory getInstance() {         
@@ -59,6 +57,11 @@ public class Inventory {
         return -1;
     }
 
+    // Get all products in inventory
+    public List<Product> getAllInventory() {
+        return products;
+    }
+
      // Save inventory to JSON file
     public void saveInventory() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -71,21 +74,6 @@ public class Inventory {
             System.err.println("Error saving inventory: " + e.getMessage());
         }
     }
-
-     // Get all products in inventory
-    public List<Product> getAllInventory() {
-        return products;
-    }
-
-      public Integer returnQuantity(String itemName) {
-        for (Product product : products) {
-            if (product.getName().equals(itemName)) {
-                return product.getQuantity();
-            }
-        }
-        return -1; // Item not found in inventory
-    }
-
     
      // Load inventory from JSON file
     public void loadInventory() {
@@ -100,7 +88,5 @@ public class Inventory {
             e.printStackTrace();
         }
     }
-
-   
 }
 

@@ -51,7 +51,7 @@ public class View_Controller {
 
     @FXML
     public void btn_switch_to_show_all_scene(ActionEvent event)  throws IOException {
-        //show all inventory controls also here, very messy but works for now
+        //had to manually create view here, not using fxml file due to populate table issues
         BorderPane root = new BorderPane();
         Button back = new Button("Back");
         back.setOnAction(new EventHandler<ActionEvent>() {
@@ -64,7 +64,7 @@ public class View_Controller {
                 }
             }
         });
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        //create table
         TableView table_view = new TableView<Product>();
         TableColumn<Product, String> table_product_column = new TableColumn<>("Product");
         table_product_column.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -74,11 +74,13 @@ public class View_Controller {
         table_view.getColumns().add(table_quantity_column);
         table_view.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
         Inventory inventory = Inventory.getInstance();
+        //populate table
         for (Product item: inventory.getAllInventory()) {
             table_view.getItems().add(item);
         }
         root.setCenter(table_view);
         root.setBottom(back);
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root,600, 400);
         stage.setScene(scene);
         stage.show();
@@ -90,7 +92,6 @@ public class View_Controller {
         if (password_field.getText().isEmpty() || !password_field.getText().equals(PASSWORD)) {
             password_field.clear();
             password_field.setPromptText("Please enter password.");
-            return;
         }
         else {
             root = FXMLLoader.load(getClass().getResource("Add_Items_View.fxml"));
@@ -116,7 +117,7 @@ public class View_Controller {
             return;
         }
         Inventory inventory = Inventory.getInstance();
-        Product item = new Product(null,-1);
+        Product item = new Product();
         item.setName(tfProductName.getText().toLowerCase()); //accept user input and make case-insensitive
         item.setQuantity(inventory.getQuantity(item.getName()));
 

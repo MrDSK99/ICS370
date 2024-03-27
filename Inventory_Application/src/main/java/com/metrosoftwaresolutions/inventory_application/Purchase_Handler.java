@@ -2,7 +2,7 @@ package com.metrosoftwaresolutions.inventory_application;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class PurchaseHandler implements  Runnable{
+public class Purchase_Handler implements  Runnable{
 
     //TODO
     //make sure this runs in its own thread, video on Discord
@@ -18,7 +18,7 @@ public class PurchaseHandler implements  Runnable{
     private Queue<Product> purchaseQueue;
     private Inventory inventory;
 
-   public  PurchaseHandler() {
+   public void PurchaseHandler() {
         this.purchaseQueue = new ConcurrentLinkedQueue<>();
         this.inventory = Inventory.getInstance();
     }
