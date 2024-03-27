@@ -18,26 +18,30 @@ public class Purchase_Handler implements  Runnable{
     private Queue<Product> purchaseQueue;
     private Inventory inventory;
 
-   public void PurchaseHandler() {
-        this.purchaseQueue = new ConcurrentLinkedQueue<>();
-        this.inventory = Inventory.getInstance();
+   public Purchase_Handler() {
+       this.purchaseQueue = new ConcurrentLinkedQueue<>();
+       //mock Products set here
+       purchaseQueue.add(new Product("apples", 2));
+       purchaseQueue.add(new Product("peaches", 3));
+       purchaseQueue.add(new Product("pineapples", 2));
+       this.inventory = Inventory.getInstance();
     }
 
     @Override
-    public void run() {
+    public void run()  {
         while (true) {
-            processPurchaseQueue();
             try {
-                Thread.sleep(3000);
+                processPurchaseQueue();
+                break;                   //close the thread when done processing queue, for demo purposes
             } catch (InterruptedException e) {
-                e.printStackTrace();
-                break;
+                throw new RuntimeException(e);
             }
         }
     }
 
-    private void processPurchaseQueue() {
+    private void processPurchaseQueue() throws InterruptedException {
         while (!purchaseQueue.isEmpty()) {
+            Thread.sleep(3000);     //sleep here to create simulated lag between purchases
             Product product = purchaseQueue.poll();
             try {
                 boolean success = processPurchase(product); // Process the purchase
@@ -48,6 +52,7 @@ public class Purchase_Handler implements  Runnable{
             } catch (Exception e){
                 e.printStackTrace();
             }
+            Thread.sleep(3000);     //split to create lag for first purchase
         }
     }
 
@@ -69,10 +74,4 @@ public class Purchase_Handler implements  Runnable{
         }
         return false;
     }
-
-    // Method to add a purchase to the queue
-    public void addToQueue(Product product) {
-        purchaseQueue.add(product);
-    }
-
 }

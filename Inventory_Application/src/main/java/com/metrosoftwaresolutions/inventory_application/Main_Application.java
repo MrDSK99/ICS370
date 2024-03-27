@@ -25,18 +25,11 @@ public class Main_Application extends Application {
         // Load existing inventory data from JSON file
         inventory.loadInventory();
 
-       // Initialize an instance PurchaseHandler
-        PurchaseHandler purchaseHandler = new PurchaseHandler();
-
-        // fill  into the purchase queue with Products
-        for (Product product : inventory.getAllInventory()) {
-            purchaseHandler.addToQueue(product);
-        }
-        //start threads here
-       new Thread(purchaseHandler).start();
-
-        // test how many thread run
-      //  System.out.println(Thread.activeCount());
+        //start handler threads
+//        Purchase_Handler delivery_handler = new Delivery_Handler();
+//        new Thread(delivery_handler).start();
+        Purchase_Handler purchase_handler = new Purchase_Handler();
+        new Thread(purchase_handler).start();
 
         //launch the GUI
         launch();
