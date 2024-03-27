@@ -43,7 +43,7 @@ public class Purchase_Handler implements  Runnable{
                 boolean success = processPurchase(product); // Process the purchase
 
                 if (!success) {
-                    System.out.println("Checkout failed: Unable to process purchase for " + product.getName());
+                    System.out.println("Unable to process purchase for " + product.getName());
                 }
             } catch (Exception e){
                 e.printStackTrace();
@@ -56,19 +56,16 @@ public class Purchase_Handler implements  Runnable{
         int quantity = product.getQuantity();
 
         // Check if item exists in inventory
-        if (inventory.getQuantity(itemName) != -1) {
-            int currentQuantity = inventory.getQuantity(itemName);
-            // Check if there's sufficient quantity in inventory for the purchase
+        Integer currentQuantity = inventory.getQuantity(itemName);
+        if (currentQuantity != null && currentQuantity > 0) {
             if (currentQuantity >= quantity) {
                 inventory.updateQuantity(itemName, -quantity);
                 System.out.println("Checkout successful: " + quantity + " " + itemName + " purchased.");
                 System.out.println("New quantity of " + itemName + ": " + (currentQuantity - quantity));
                 return true;
-            } else {
-                System.out.println("Checkout failed: Insufficient quantity of " + itemName + " in stock.");
             }
         } else {
-            System.out.println("Checkout failed: Item " + itemName + " not found in inventory.");
+            System.out.println("Checkout failed: Insufficient quantity  " + itemName + " in stock.");
         }
         return false;
     }
