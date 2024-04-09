@@ -26,8 +26,8 @@ public class Main_Application extends Application {
         inventory.loadInventory();
 
         //start handler threads
-//        Purchase_Handler delivery_handler = new Delivery_Handler();
-//        new Thread(delivery_handler).start();
+        Delivery_Handler delivery_handler = new Delivery_Handler();
+        new Thread(delivery_handler).start();
         Purchase_Handler purchase_handler = new Purchase_Handler();
         new Thread(purchase_handler).start();
 
