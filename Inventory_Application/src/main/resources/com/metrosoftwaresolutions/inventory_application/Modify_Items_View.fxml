@@ -31,7 +31,7 @@
                         <Font size="29.0" />
                     </font>
                 </Label>
-                <TextField fx:id="AddProductName" layoutX="218.0" layoutY="152.0" prefHeight="61.0" prefWidth="368.0" promptText="Product Name">
+                <TextField fx:id="tfProduct" layoutX="218.0" layoutY="152.0" prefHeight="61.0" prefWidth="368.0" promptText="Product Name">
                     <font>
                         <Font size="23.0" />
                     </font>
@@ -50,7 +50,7 @@
                     <font>
                         <Font size="24.0" />
                     </font></TextField>
-                <TextField fx:id="AddQty" layoutX="144.0" layoutY="228.0" prefHeight="47.0" prefWidth="99.0">
+                <TextField fx:id="tfQuantity" layoutX="144.0" layoutY="228.0" prefHeight="47.0" prefWidth="99.0">
                     <font>
                         <Font size="24.0" />
                     </font>

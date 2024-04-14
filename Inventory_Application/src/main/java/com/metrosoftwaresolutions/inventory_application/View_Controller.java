@@ -85,11 +85,11 @@ public class View_Controller {
 
     @FXML
     public void btn_switch_to_modify_scene(ActionEvent event) throws IOException {
-            root = FXMLLoader.load(getClass().getResource("Modify_Items_View.fxml"));
-            stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+        root = FXMLLoader.load(getClass().getResource("Modify_Items_View.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     //search inventory controls here
@@ -119,10 +119,10 @@ public class View_Controller {
 
     //add item to inventory controls here
     @FXML
-    private TextField AddProductName;
+    private TextField tfProduct;
 
     @FXML
-    private TextField AddQty;
+    private TextField tfQuantity;
 
     @FXML
     private TextField confirmation;
@@ -131,28 +131,26 @@ public class View_Controller {
     void add_item_button(ActionEvent event) {
         //checking for valid input first
         boolean quantityIsNumber = true;
-        try { Integer.parseInt(AddQty.getText()); }
+        try { Integer.parseInt(tfQuantity.getText()); }
         catch (NumberFormatException e) { quantityIsNumber = false; }
-        if (AddProductName.getText().isEmpty()) {
+        if (tfProduct.getText().isEmpty()) {
             confirmation.setText("Please enter a product name.");
             return;
         }
-        else if (AddQty.getText().isEmpty()) {
+        else if (tfQuantity.getText().isEmpty()) {
             confirmation.setText("Please enter the quantity.");
             return;
         }
-        else if (!quantityIsNumber || Integer.parseInt(AddQty.getText()) < 0 ) {
+        else if (!quantityIsNumber || Integer.parseInt(tfQuantity.getText()) < 0 ) {
             confirmation.setText("Invalid quantity.");
             return;
         }
-        String itemName = AddProductName.getText().toLowerCase();
-        int quantity = Integer.parseInt(AddQty.getText());
-        Inventory inventory = Inventory.getInstance();
-        if (inventory.getQuantity(itemName) == -1)
-            inventory.addItem(itemName, quantity);
-        else  // If the item already exists, update its quantity
-            inventory.updateQuantity(itemName,quantity);
-        confirmation.setText(quantity + " " + itemName + " added to inventory.");
+        String name = tfProduct.getText().toLowerCase();
+        int quantity = Integer.parseInt(tfQuantity.getText());
+        Product product = new Product(name, quantity);
+        Add_Product_Command new_command = new Add_Product_Command(product);
+        new_command.execute();
+        confirmation.setText(quantity + " " + name + " added to inventory.");
     }
 
     @FXML

@@ -30,22 +30,35 @@ public class Inventory {
         return inventory;
     }
 
-    public void addItem(String itemName, Integer quantity) {
-        products.add(new Product(itemName, quantity));
+    public void addItem(Product product) {
+        products.add(product);
         saveInventory();
     }
 
-    public void updateQuantity(String itemName, Integer additionalQuantity) {
-        for (Product product : products) {
-            if (product.getName().equals(itemName)) {
-                int currentQuantity = product.getQuantity();
-                product.setQuantity(currentQuantity + additionalQuantity);
+    public void addQuantity(Product product) {
+       String name = product.getName();
+       Integer additional_quantity = product.getQuantity();
+        for (Product p : products) {
+            if (p.getName().equals(name)) {
+                int current_quantity = p.getQuantity();
+                p.setQuantity(current_quantity + additional_quantity);
                 saveInventory();
                 return;
             }
         }
-        // If item doesn't exist, add it
-        addItem(itemName, additionalQuantity);
+    }
+
+    public void removeQuantity(Product product) {
+        String name = product.getName();
+        Integer quantity_to_remove = product.getQuantity();
+        for (Product p : products) {
+            if (p.getName().equals(name)) {
+                int current_quantity = p.getQuantity();
+                p.setQuantity(current_quantity - quantity_to_remove);
+                saveInventory();
+                return;
+            }
+        }
     }
 
     public Integer getQuantity(String itemName) {

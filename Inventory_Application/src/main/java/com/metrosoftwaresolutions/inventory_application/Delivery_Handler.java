@@ -2,7 +2,7 @@ package com.metrosoftwaresolutions.inventory_application;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class Delivery_Handler implements Runnable{
+public class Delivery_Handler implements Runnable {
 
     //TODO
     //make sure this runs in its own thread, video on Discord
@@ -19,9 +19,9 @@ public class Delivery_Handler implements Runnable{
     
     public Delivery_Handler() {
         this.deliveryQueue = new ConcurrentLinkedQueue<>();
-        deliveryQueue.add(new Product("bananas", 5));
+        deliveryQueue.add(new Product("bananas", 8));
         deliveryQueue.add(new Product("starfruit", 6));
-        deliveryQueue.add(new Product("apples", 2));
+        deliveryQueue.add(new Product("apples", 10));
         this.inventory = Inventory.getInstance();
     }
 
@@ -38,7 +38,7 @@ public class Delivery_Handler implements Runnable{
 
     private void processDeliveryQueue() throws InterruptedException {
         while(!deliveryQueue.isEmpty()){
-            Thread.sleep(3000);
+            Thread.sleep(2000);
             Product queueItem = deliveryQueue.poll();
 
             try {
@@ -58,14 +58,14 @@ public class Delivery_Handler implements Runnable{
         String itemName = queueItem.getName();
         int quantity = queueItem.getQuantity();
         Integer currentQuantity = inventory.getQuantity(itemName);
-        if (currentQuantity != null) {
-            inventory.updateQuantity(itemName, quantity);
+        if (currentQuantity != -1) {
+            inventory.addQuantity(queueItem);
             System.out.println("Delivery successful: " + quantity + " " + itemName + " delivered.");
             System.out.println("New quantity of " + itemName + ": " + (currentQuantity + quantity));
             return true;
         }
         else {
-            inventory.addItem(itemName, quantity);
+            inventory.addItem(queueItem);
             System.out.println("Delivery successful: " + quantity + " " + itemName + " delivered.");
             System.out.println("New quantity of " + itemName + ": " + quantity);
             return true;

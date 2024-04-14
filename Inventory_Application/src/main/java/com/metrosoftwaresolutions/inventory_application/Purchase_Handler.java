@@ -2,7 +2,7 @@ package com.metrosoftwaresolutions.inventory_application;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class Purchase_Handler implements  Runnable{
+public class Purchase_Handler implements Runnable {
 
     //TODO
     //make sure this runs in its own thread, video on Discord
@@ -64,7 +64,7 @@ public class Purchase_Handler implements  Runnable{
         Integer currentQuantity = inventory.getQuantity(itemName);
         if (currentQuantity != null && currentQuantity > 0) {
             if (currentQuantity >= quantity) {
-                inventory.updateQuantity(itemName, -quantity);
+                inventory.removeQuantity(product);
                 System.out.println("Checkout successful: " + quantity + " " + itemName + " purchased.");
                 System.out.println("New quantity of " + itemName + ": " + (currentQuantity - quantity));
                 return true;
