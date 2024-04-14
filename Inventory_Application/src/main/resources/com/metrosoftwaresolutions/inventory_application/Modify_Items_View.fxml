@@ -21,7 +21,7 @@
                         <Image url="@logo2.jpg" />
                     </image>
                 </ImageView>
-                <Label layoutX="144.0" layoutY="90.0" prefHeight="53.0" prefWidth="311.0" text="Add Item to Inventory" textAlignment="CENTER">
+                <Label alignment="CENTER" layoutX="144.0" layoutY="90.0" prefHeight="53.0" prefWidth="311.0" text="Modify Inventory" textAlignment="CENTER">
                     <font>
                         <Font size="30.0" />
                     </font>
@@ -41,7 +41,7 @@
                         <Font size="29.0" />
                     </font>
                 </Label>
-                <Button layoutX="233.0" layoutY="291.0" mnemonicParsing="false" onAction="#add_item_button" prefHeight="47.0" prefWidth="133.0" text="Add">
+                <Button layoutX="127.0" layoutY="295.0" mnemonicParsing="false" onAction="#add_item_button" prefHeight="47.0" prefWidth="133.0" text="Add">
                     <font>
                         <Font size="22.0" />
                     </font>
@@ -55,11 +55,17 @@
                         <Font size="24.0" />
                     </font>
                 </TextField>
-            <Button layoutX="31.0" layoutY="429.0" mnemonicParsing="false" onAction="#back_btn" prefHeight="53.0" prefWidth="153.0" text="Back">
+            <Button layoutX="14.0" layoutY="430.0" mnemonicParsing="false" onAction="#back_btn" prefHeight="37.0" prefWidth="131.0" text="Back">
                <font>
                   <Font size="22.0" />
                </font>
             </Button>
+            <Button layoutX="336.0" layoutY="295.0" mnemonicParsing="false" onAction="#remove_item_button" prefHeight="47.0" prefWidth="133.0" text="Remove">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Button>
+            <Button alignment="CENTER" layoutX="274.0" layoutY="417.0" mnemonicParsing="false" onAction="#undo_button" text="Undo" />
             </children>
         </AnchorPane>
     </top>

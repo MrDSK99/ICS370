@@ -20,7 +20,6 @@ import java.io.IOException;
 public class View_Controller {
 
 
-    private final String PASSWORD = "password";
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -37,8 +36,6 @@ public class View_Controller {
     }
 
     //home screen controls here
-    @FXML
-    private TextField password_field;
 
     @FXML
     public void btn_switch_to_search_scene(ActionEvent event) throws IOException {
@@ -87,19 +84,12 @@ public class View_Controller {
     }
 
     @FXML
-    public void btn_switch_to_add_item_scene(ActionEvent event) throws IOException {
-        //user needs correct password to access add item screen
-        if (password_field.getText().isEmpty() || !password_field.getText().equals(PASSWORD)) {
-            password_field.clear();
-            password_field.setPromptText("Please enter password.");
-        }
-        else {
-            root = FXMLLoader.load(getClass().getResource("Add_Items_View.fxml"));
+    public void btn_switch_to_modify_scene(ActionEvent event) throws IOException {
+            root = FXMLLoader.load(getClass().getResource("Modify_Items_View.fxml"));
             stage = (Stage)((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-        }
     }
 
     //search inventory controls here
@@ -163,5 +153,15 @@ public class View_Controller {
         else  // If the item already exists, update its quantity
             inventory.updateQuantity(itemName,quantity);
         confirmation.setText(quantity + " " + itemName + " added to inventory.");
+    }
+
+    @FXML
+    void remove_item_button(ActionEvent event) {
+        confirmation.setText("Implement this.");
+    }
+
+    @FXML
+    void undo_button(ActionEvent event) {
+        confirmation.setText("Implement this too.");
     }
 }
