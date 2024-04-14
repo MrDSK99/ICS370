@@ -18,8 +18,4 @@ public class Add_Product_Command implements Command {
             inventory.addQuantity(product);
     }
 
-    @Override
-    public void undo() {
-
-    }
 }

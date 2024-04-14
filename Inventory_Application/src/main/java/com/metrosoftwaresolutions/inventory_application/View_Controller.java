@@ -148,8 +148,8 @@ public class View_Controller {
         String name = tfProduct.getText().toLowerCase();
         int quantity = Integer.parseInt(tfQuantity.getText());
         Product product = new Product(name, quantity);
-        Add_Product_Command new_command = new Add_Product_Command(product);
-        new_command.execute();
+        product.setCommand( new Add_Product_Command(product));
+        product.executeCommand();
         confirmation.setText(quantity + " " + name + " added to inventory.");
     }
 

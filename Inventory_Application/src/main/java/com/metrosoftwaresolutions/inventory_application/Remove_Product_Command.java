@@ -16,9 +16,4 @@ public class Remove_Product_Command implements Command {
 
     }
 
-    @Override
-    public void undo() {
-
-    }
-
 }
