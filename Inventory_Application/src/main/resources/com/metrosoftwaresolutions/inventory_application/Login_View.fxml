@@ -43,7 +43,7 @@
             </Label>
             <TextField fx:id="usernameTextField" layoutX="94.0" layoutY="188.0" promptText="Username" />
             <PasswordField fx:id="passwordPasswordField" layoutX="94.0" layoutY="227.0" promptText="Password" />
-            <Button fx:id="loginButton" layoutX="95.0" layoutY="288.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="27.0" prefWidth="158.0" style="-fx-background-color: #3d87db;" text="Login" textFill="WHITE">
+            <Button fx:id="loginButton" layoutX="76.0" layoutY="289.0" mnemonicParsing="false" onAction="#loginButtonOnAction" prefHeight="27.0" prefWidth="158.0" style="-fx-background-color: #3d87db;" text="Login" textFill="WHITE">
                <font>
                   <Font size="14.0" />
                </font>
@@ -53,8 +53,8 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <Hyperlink alignment="CENTER" layoutX="99.0" layoutY="348.0" prefHeight="23.0" prefWidth="136.0" text="Forgot Your Password" onAction="#resetPassword"/>
-            <Hyperlink alignment="CENTER" layoutX="87.0" layoutY="325.0" prefHeight="22.0" prefWidth="159.0" text="Create an account" onAction="#registerForm"/>
+            <Hyperlink alignment="CENTER" layoutX="88.0" layoutY="348.0" onAction="#resetPassword" prefHeight="23.0" prefWidth="136.0" text="Forgot Your Password" />
+            <Hyperlink alignment="CENTER" layoutX="76.0" layoutY="325.0" onAction="#registerForm" prefHeight="22.0" prefWidth="159.0" text="Create an account" />
          </children>
       </AnchorPane>
    </right>

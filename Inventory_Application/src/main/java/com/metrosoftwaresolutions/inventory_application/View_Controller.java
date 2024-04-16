@@ -92,6 +92,15 @@ public class View_Controller {
         stage.show();
     }
 
+    @FXML
+    public void btn_switch_to_login_scene(ActionEvent event) throws IOException {
+        root = FXMLLoader.load(getClass().getResource("Login_View.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     //search inventory controls here
     @FXML
     private TextField output;
