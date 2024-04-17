@@ -12,6 +12,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.stage.StageStyle;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import java.io.FileReader;
 import java.io.IOException;
 
 
@@ -33,13 +37,42 @@ public class Login_Controller{
     private TextField usernameTextField;
 
 
+    private void navigateToHomeScreen(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("Home_Screen.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
 
 // login Message will show if invalid input
-    @FXML
-    void loginButtonOnAction(ActionEvent event) throws IOException{
-         loginMessageLabel.setText("Invalid account. Please try again.");
+   @FXML
+    void loginButtonOnAction(ActionEvent event) {
+        String username = usernameTextField.getText();
+        String password = passwordPasswordField.getText();
+
+        try (FileReader reader = new FileReader("users.json")) {
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
+
+            String savedUsername = (String) jsonObject.get("username");
+            String savedPassword = (String) jsonObject.get("password");
+
+            if (username.equals(savedUsername) && password.equals(savedPassword)) {
+                // Proceed to main application window
+                navigateToHomeScreen(event);
+
+            } else {
+                loginMessageLabel.setText("Invalid username or password.");
+            }
+        } catch (IOException | ParseException e) {
+            loginMessageLabel.setText("Error: Failed to read user data.");
+            e.printStackTrace();
+        }
+
+
     }
- // you can do database here and if statement for password match
+
 
 
     // create an new Account
