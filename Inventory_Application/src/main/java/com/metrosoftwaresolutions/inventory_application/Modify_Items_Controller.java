@@ -72,6 +72,7 @@ public class Modify_Items_Controller {
 
     @FXML
     private void remove_item_button(ActionEvent event) {
+        //TODO
 //        if (!isValidUserInput())
 //            return;
 //        String name = tfProduct.getText().toLowerCase();

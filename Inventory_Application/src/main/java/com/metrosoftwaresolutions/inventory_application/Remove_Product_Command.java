@@ -10,10 +10,8 @@ public class Remove_Product_Command implements Command {
         this.product = product;
     }
 
-
     @Override
     public void execute() {
-
+    //TODO
     }
-
 }

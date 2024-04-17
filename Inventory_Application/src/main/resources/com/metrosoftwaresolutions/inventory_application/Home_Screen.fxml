@@ -32,7 +32,7 @@
                   <Font size="24.0" />
                </font>
             </Button>
-            <Hyperlink accessibleRole="BUTTON" alignment="CENTER" layoutX="469.0" layoutY="383.0" onAction="#btn_switch_to_login_scene" prefHeight="23.0" prefWidth="93.0" text="Sign Out">
+            <Hyperlink accessibleRole="BUTTON" alignment="CENTER" layoutX="469.0" layoutY="383.0" onAction="#btn_switch_to_login_scene" prefHeight="23.0" prefWidth="93.0" text="Logout">
                <font>
                   <Font size="14.0" />
                </font>

@@ -17,5 +17,4 @@ public class Add_Product_Command implements Command {
         else  // If the item already exists, update its quantity
             inventory.addQuantity(product);
     }
-
 }
