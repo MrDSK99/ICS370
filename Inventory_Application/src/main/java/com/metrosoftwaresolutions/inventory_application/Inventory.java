@@ -75,6 +75,13 @@ public class Inventory {
         return products;
     }
 
+    public void addFromCommand (Product product) {
+        if (inventory.getQuantity(product.getName()) == -1)
+            inventory.addItem(product);
+        else  // If the item already exists, update its quantity
+            inventory.addQuantity(product);
+    }
+
      // Save inventory to JSON file
     public void saveInventory() {
         ObjectMapper objectMapper = new ObjectMapper();
