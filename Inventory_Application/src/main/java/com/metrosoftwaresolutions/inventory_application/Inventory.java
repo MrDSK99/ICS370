@@ -48,6 +48,13 @@ public class Inventory {
         }
     }
 
+    public void addFromCommand(Product product) {
+        if (inventory.getQuantity(product.getName()) == -1)
+            inventory.addItem(product);
+        else  // If the item already exists, update its quantity
+            inventory.addQuantity(product);
+    }
+
     public void removeQuantity(Product product) {
         String name = product.getName();
         Integer quantity_to_remove = product.getQuantity();
@@ -61,6 +68,10 @@ public class Inventory {
         }
     }
 
+    public void removeFromCommand(Product product) {
+        inventory.removeQuantity(product);
+    }
+
     public Integer getQuantity(String itemName) {
          for (Product product : products) {
             if (product.getName().equals(itemName)) {
@@ -70,16 +81,8 @@ public class Inventory {
         return -1;
     }
 
-    // Get all products in inventory
     public List<Product> getAllInventory() {
         return products;
-    }
-
-    public void addFromCommand (Product product) {
-        if (inventory.getQuantity(product.getName()) == -1)
-            inventory.addItem(product);
-        else  // If the item already exists, update its quantity
-            inventory.addQuantity(product);
     }
 
      // Save inventory to JSON file
@@ -109,4 +112,3 @@ public class Inventory {
         }
     }
 }
-

@@ -10,12 +10,12 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Stack;
 
 public class Modify_Items_Controller {
 
-    public static Deque<Product> command_list = new ArrayDeque<Product>();
+    private Stack<Product> command_list = new Stack();
+    private Stack<String> command_type = new Stack();
 
     private Stage stage;
     private Scene scene;
@@ -50,45 +50,53 @@ public class Modify_Items_Controller {
             return true;
     }
 
-    public void executeCommands() {
-        while (!command_list.isEmpty()) {
-            Product p = command_list.remove();
-            p.executeCommand();
-        }
-    }
-
     @FXML
     private void add_item_button(ActionEvent event) {
-        //checking for valid input first
         if (!isValidUserInput())
             return;
-        String name = tfProduct.getText().toLowerCase();
+        String product_name = tfProduct.getText().toLowerCase();
         int quantity = Integer.parseInt(tfQuantity.getText());
-        Product product = new Product(name, quantity);
-        product.setCommand( new Add_Product_Command(product));
-        command_list.add(product);
-        confirmation.setText(quantity + " " + name + " added to inventory.");
+        command_type.push("add");
+        Product product = new Product(product_name, quantity);
+        product.setCommand(new Add_Product_Command(product));
+        product.executeCommand();
+        command_list.push(product);
+        confirmation.setText(quantity + " " + product_name + " added to inventory.");
     }
 
     @FXML
     private void remove_item_button(ActionEvent event) {
-        //TODO
-//        if (!isValidUserInput())
-//            return;
-//        String name = tfProduct.getText().toLowerCase();
-//        int quantity = Integer.parseInt(tfQuantity.getText());
-//        Product product = new Product(name, quantity);
-//        product.setCommand( new Remove_Product_Command(product));
-//        command_list.add(product);
-//        confirmation.setText(quantity + " " + name + " removed from inventory.");
-        confirmation.setText("10 items removed from inventory.");
+        if (!isValidUserInput())
+            return;
+        String product_name = tfProduct.getText().toLowerCase();
+        int quantity = Integer.parseInt(tfQuantity.getText());
+        Inventory inventory = Inventory.getInstance();
+        Integer quantity_in_stock = inventory.getQuantity(product_name);
+        if (quantity_in_stock == -1)
+            confirmation.setText(product_name.substring(0,1).toUpperCase()+product_name.substring(1)+" does not exist in inventory.");
+        else if (quantity > quantity_in_stock)
+            confirmation.setText("Removing too many, there are " + quantity_in_stock + " in stock.");
+        else {
+            command_type.push("remove");
+            Product product = new Product(product_name, quantity);
+            product.setCommand(new Remove_Product_Command(product));
+            product.executeCommand();
+            command_list.push(product);
+            confirmation.setText(quantity + " " + product_name + " removed from inventory.");
+        }
     }
 
     @FXML
     private void undo_button(ActionEvent event) {
         if (!command_list.isEmpty()) {
-            Product p = command_list.removeLast();
-            confirmation.setText("Undone: \"" + p.getQuantity() + " " + p.getName() + " added to inventory.\"");
+            Product p = command_list.pop();
+            if (command_type.pop() == "add") {
+                p.undoCommand();
+                confirmation.setText("Undone: \"" + p.getQuantity() + " " + p.getName() + " added to inventory.\"");
+            } else {
+                p.undoCommand();
+                confirmation.setText("Undone: \"" + p.getQuantity() + " " + p.getName() + " removed from inventory.\"");
+            }
         }
         else {
             confirmation.setText("Nothing to undo.");
@@ -97,8 +105,8 @@ public class Modify_Items_Controller {
 
     @FXML
     private void back_btn(ActionEvent event) throws IOException {
-        //clicking the back button applies all inventory change commands
-        executeCommands();
+        command_list.clear();
+        command_type.clear();
         root = FXMLLoader.load(getClass().getResource("Home_Screen.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

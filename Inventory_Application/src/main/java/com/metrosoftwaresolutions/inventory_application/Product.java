@@ -2,9 +2,10 @@ package com.metrosoftwaresolutions.inventory_application;
 
 public class Product {
 
-    Command command;
+    private Command command;
     private String name;
     private Integer quantity;
+
 
     public Product() {
         this.name = "";
@@ -40,5 +41,7 @@ public class Product {
         command.execute();
     }
 
+    public void undoCommand() {
+        command.undo();
+    }
 }
-

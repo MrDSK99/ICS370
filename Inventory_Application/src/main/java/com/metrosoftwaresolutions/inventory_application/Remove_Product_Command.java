@@ -3,6 +3,7 @@ package com.metrosoftwaresolutions.inventory_application;
 public class Remove_Product_Command implements Command {
 
     private Product product;
+    Inventory inventory = Inventory.getInstance();
 
     public Remove_Product_Command(Product product) {
         this.product = product;
@@ -10,7 +11,10 @@ public class Remove_Product_Command implements Command {
 
     @Override
     public void execute() {
-        Inventory inventory = Inventory.getInstance();
-        //TODO
+        inventory.removeFromCommand(product);
+    }
+    @Override
+    public void undo() {
+        inventory.addFromCommand(product);
     }
 }

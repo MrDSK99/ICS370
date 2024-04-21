@@ -34,11 +34,6 @@ public class Main_Application extends Application {
         //launch the GUI
         launch();
 
-        //make sure user commands to modify inventory executed if they closed the window instead of clicked back button
-        Modify_Items_Controller c = new Modify_Items_Controller();
-        if (!c.command_list.isEmpty())
-            c.executeCommands();
-
         // Call saveInventory() method to save the updated inventory data
         Inventory.getInstance().saveInventory();
     }
