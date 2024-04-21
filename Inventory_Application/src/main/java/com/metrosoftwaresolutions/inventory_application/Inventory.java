@@ -72,6 +72,16 @@ public class Inventory {
         inventory.removeQuantity(product);
     }
 
+    public void deleteItem(Product product) {
+        String name = product.getName();
+        for (Product p : products) {
+            if (p.getName().equals(name)) {
+                products.remove(p);
+                break;
+            }
+        }
+    }
+
     public Integer getQuantity(String itemName) {
          for (Product product : products) {
             if (product.getName().equals(itemName)) {

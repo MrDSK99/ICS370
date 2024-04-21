@@ -14,8 +14,11 @@ import java.util.Stack;
 
 public class Modify_Items_Controller {
 
+    Inventory inventory = Inventory.getInstance();
     private Stack<Product> command_list = new Stack();
+    //stack holds list of products for potential undo of add/remove commands
     private Stack<String> command_type = new Stack();
+    //stack tracks type of command executed, used for displaying proper output and deleting a new product if added
 
     private Stage stage;
     private Scene scene;
@@ -50,14 +53,25 @@ public class Modify_Items_Controller {
             return true;
     }
 
+    private boolean isNewItem(Product product) {
+        Integer quantity_in_stock = inventory.getQuantity(product.getName());
+        if (quantity_in_stock == -1)
+            return true;
+        else
+            return false;
+    }
+
     @FXML
     private void add_item_button(ActionEvent event) {
         if (!isValidUserInput())
             return;
         String product_name = tfProduct.getText().toLowerCase();
         int quantity = Integer.parseInt(tfQuantity.getText());
-        command_type.push("add");
         Product product = new Product(product_name, quantity);
+        if (isNewItem(product))
+            command_type.push("new");
+        else
+            command_type.push("add");
         product.setCommand(new Add_Product_Command(product));
         product.executeCommand();
         command_list.push(product);
@@ -70,15 +84,14 @@ public class Modify_Items_Controller {
             return;
         String product_name = tfProduct.getText().toLowerCase();
         int quantity = Integer.parseInt(tfQuantity.getText());
-        Inventory inventory = Inventory.getInstance();
         Integer quantity_in_stock = inventory.getQuantity(product_name);
         if (quantity_in_stock == -1)
             confirmation.setText(product_name.substring(0,1).toUpperCase()+product_name.substring(1)+" does not exist in inventory.");
         else if (quantity > quantity_in_stock)
             confirmation.setText("Removing too many, there are " + quantity_in_stock + " in stock.");
         else {
-            command_type.push("remove");
             Product product = new Product(product_name, quantity);
+            command_type.push("remove");
             product.setCommand(new Remove_Product_Command(product));
             product.executeCommand();
             command_list.push(product);
@@ -90,12 +103,20 @@ public class Modify_Items_Controller {
     private void undo_button(ActionEvent event) {
         if (!command_list.isEmpty()) {
             Product p = command_list.pop();
-            if (command_type.pop() == "add") {
-                p.undoCommand();
-                confirmation.setText("Undone: \"" + p.getQuantity() + " " + p.getName() + " added to inventory.\"");
-            } else {
-                p.undoCommand();
-                confirmation.setText("Undone: \"" + p.getQuantity() + " " + p.getName() + " removed from inventory.\"");
+            switch (command_type.pop()) {
+                case "add":
+                    confirmation.setText("Undone: \"" + p.getQuantity() + " " + p.getName() + " added to inventory.\"");
+                    p.undoCommand();
+                    break;
+                case "remove":
+                    confirmation.setText("Undone: \"" + p.getQuantity() + " " + p.getName() + " removed from inventory.\"");
+                    p.undoCommand();
+                    break;
+                case "new":
+                    confirmation.setText("Undone: \"" + p.getQuantity() + " " + p.getName() + " added to inventory.\"");
+                    p.undoCommand();
+                    inventory.deleteItem(p);
+                    break;
             }
         }
         else {
