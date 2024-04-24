@@ -11,14 +11,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class Reset_Password_Controller {
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
+    public Button backButton;
 
     @FXML
     private PasswordField confirmPasswordFiled;
@@ -40,15 +43,51 @@ public class Reset_Password_Controller {
 
     @FXML
     void resetButtonOnAction(ActionEvent event) {
+        String username = usernameField.getText();
+        String newPassword = newPasswordField.getText();
+        String confirmedPassword = confirmPasswordFiled.getText();
 
+        if (!newPassword.equals(confirmedPassword)) {
+            resetMessageLabel.setText("Passwords do not match.");
+            return;
+        }
+
+        try (FileReader reader = new FileReader("users.json")) {
+            JSONParser jsonParser = new JSONParser();
+            JSONArray jsonArray = (JSONArray) jsonParser.parse(reader);
+
+            for (Object obj : jsonArray) {
+                JSONObject userObject = (JSONObject) obj;
+                String savedUsername = (String) userObject.get("username");
+
+                if (username.equals(savedUsername)) {
+                    userObject.put("password", newPassword);
+                    updateJsonFile(jsonArray);
+                    resetMessageLabel.setText("Password reset successful.");
+                    return;
+                }
+            }
+            resetMessageLabel.setText("Username not found.");
+        } catch (IOException | ParseException e) {
+            resetMessageLabel.setText("Error: Failed to read user data.");
+            e.printStackTrace();
+        }
     }
+
+    private void updateJsonFile(JSONArray jsonArray) throws IOException {
+        try (FileWriter file = new FileWriter("users.json")) {
+            file.write(jsonArray.toJSONString());
+        }
+    }
+
     @FXML
-    private void backButton(ActionEvent event) throws IOException {
-        //this code can be put in a method getScene(scene.fxml), used 3 times
-        root = FXMLLoader.load(getClass().getResource("Login_View.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+    public void backButton (ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("Login_View.fxml"));
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
     }
+
+
 }

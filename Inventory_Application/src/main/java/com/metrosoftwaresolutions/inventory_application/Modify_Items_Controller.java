@@ -10,15 +10,12 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class Modify_Items_Controller {
 
-    Inventory inventory = Inventory.getInstance();
-    private Stack<Product> command_list = new Stack();
-    //stack holds list of products for potential undo of add/remove commands
-    private Stack<String> command_type = new Stack();
-    //stack tracks type of command executed, used for displaying proper output and deleting a new product if added
+    public static Deque<Product> command_list = new ArrayDeque<Product>();
 
     private Stage stage;
     private Scene scene;
@@ -53,71 +50,44 @@ public class Modify_Items_Controller {
             return true;
     }
 
-    private boolean isNewItem(Product product) {
-        Integer quantity_in_stock = inventory.getQuantity(product.getName());
-        if (quantity_in_stock == -1)
-            return true;
-        else
-            return false;
+    public void executeCommands() {
+        while (!command_list.isEmpty()) {
+            Product p = command_list.remove();
+            p.executeCommand();
+        }
     }
 
     @FXML
     private void add_item_button(ActionEvent event) {
+        //checking for valid input first
         if (!isValidUserInput())
             return;
-        String product_name = tfProduct.getText().toLowerCase();
+        String name = tfProduct.getText().toLowerCase();
         int quantity = Integer.parseInt(tfQuantity.getText());
-        Product product = new Product(product_name, quantity);
-        if (isNewItem(product))
-            command_type.push("new");
-        else
-            command_type.push("add");
-        product.setCommand(new Add_Product_Command(product));
-        product.executeCommand();
-        command_list.push(product);
-        confirmation.setText(quantity + " " + product_name + " added to inventory.");
+        Product product = new Product(name, quantity);
+        product.setCommand( new Add_Product_Command(product));
+        command_list.add(product);
+        confirmation.setText(quantity + " " + name + " added to inventory.");
     }
 
     @FXML
     private void remove_item_button(ActionEvent event) {
-        if (!isValidUserInput())
-            return;
-        String product_name = tfProduct.getText().toLowerCase();
-        int quantity = Integer.parseInt(tfQuantity.getText());
-        Integer quantity_in_stock = inventory.getQuantity(product_name);
-        if (quantity_in_stock == -1)
-            confirmation.setText(product_name.substring(0,1).toUpperCase()+product_name.substring(1)+" does not exist in inventory.");
-        else if (quantity > quantity_in_stock)
-            confirmation.setText("Removing too many, there are " + quantity_in_stock + " in stock.");
-        else {
-            Product product = new Product(product_name, quantity);
-            command_type.push("remove");
-            product.setCommand(new Remove_Product_Command(product));
-            product.executeCommand();
-            command_list.push(product);
-            confirmation.setText(quantity + " " + product_name + " removed from inventory.");
-        }
+//        if (!isValidUserInput())
+//            return;
+//        String name = tfProduct.getText().toLowerCase();
+//        int quantity = Integer.parseInt(tfQuantity.getText());
+//        Product product = new Product(name, quantity);
+//        product.setCommand( new Remove_Product_Command(product));
+//        command_list.add(product);
+//        confirmation.setText(quantity + " " + name + " removed from inventory.");
+        confirmation.setText("10 items removed from inventory.");
     }
 
     @FXML
     private void undo_button(ActionEvent event) {
         if (!command_list.isEmpty()) {
-            Product p = command_list.pop();
-            switch (command_type.pop()) {
-                case "add":
-                    confirmation.setText("Undone: \"" + p.getQuantity() + " " + p.getName() + " added to inventory.\"");
-                    p.undoCommand();
-                    break;
-                case "remove":
-                    confirmation.setText("Undone: \"" + p.getQuantity() + " " + p.getName() + " removed from inventory.\"");
-                    p.undoCommand();
-                    break;
-                case "new":
-                    confirmation.setText("Undone: \"" + p.getQuantity() + " " + p.getName() + " added to inventory.\"");
-                    p.undoCommand();
-                    inventory.deleteItem(p);
-                    break;
-            }
+            Product p = command_list.removeLast();
+            confirmation.setText("Undone: \"" + p.getQuantity() + " " + p.getName() + " added to inventory.\"");
         }
         else {
             confirmation.setText("Nothing to undo.");
@@ -126,8 +96,8 @@ public class Modify_Items_Controller {
 
     @FXML
     private void back_btn(ActionEvent event) throws IOException {
-        command_list.clear();
-        command_type.clear();
+        //clicking the back button applies all inventory change commands
+        executeCommands();
         root = FXMLLoader.load(getClass().getResource("Home_Screen.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);

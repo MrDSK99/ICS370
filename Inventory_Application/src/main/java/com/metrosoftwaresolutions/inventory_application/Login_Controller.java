@@ -12,9 +12,11 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.stage.StageStyle;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -45,7 +47,8 @@ public class Login_Controller{
         stage.show();
     }
 
-// login Message will show if invalid input
+
+
     @FXML
     void loginButtonOnAction(ActionEvent event) {
         String username = usernameTextField.getText();
@@ -75,8 +78,6 @@ public class Login_Controller{
 
 
 
-
-    // create an new Account
     public void registerForm(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("Register_View.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -84,7 +85,7 @@ public class Login_Controller{
         stage.setScene(scene);
         stage.show();
     }
-    // reset password
+
     public void resetPassword(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("Reset_Password_View.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
