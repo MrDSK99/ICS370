@@ -46,32 +46,33 @@ public class Login_Controller{
     }
 
 // login Message will show if invalid input
-   @FXML
+    @FXML
     void loginButtonOnAction(ActionEvent event) {
         String username = usernameTextField.getText();
         String password = passwordPasswordField.getText();
 
         try (FileReader reader = new FileReader("users.json")) {
             JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
+            JSONArray jsonArray = (JSONArray) jsonParser.parse(reader);
 
-            String savedUsername = (String) jsonObject.get("username");
-            String savedPassword = (String) jsonObject.get("password");
+            for (Object obj : jsonArray) {
+                JSONObject userObject = (JSONObject) obj;
+                String savedUsername = (String) userObject.get("username");
+                String savedPassword = (String) userObject.get("password");
 
-            if (username.equals(savedUsername) && password.equals(savedPassword)) {
-                // Proceed to main application window
-                navigateToHomeScreen(event);
-
-            } else {
-                loginMessageLabel.setText("Invalid username or password.");
+                if (username.equals(savedUsername) && password.equals(savedPassword)) {
+                    // Proceed to main application window
+                    navigateToHomeScreen(event);
+                    return;
+                }
             }
+            loginMessageLabel.setText("Invalid username or password.");
         } catch (IOException | ParseException e) {
             loginMessageLabel.setText("Error: Failed to read user data.");
             e.printStackTrace();
         }
-
-
     }
+
 
 
 
